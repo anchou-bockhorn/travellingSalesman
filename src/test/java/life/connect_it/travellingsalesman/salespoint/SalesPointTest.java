@@ -56,6 +56,14 @@ public class SalesPointTest {
     }
 
     @Test
+    public void testEqualsDifferentClasses() {
+        SalesPoint salesPoint1 = new SalesPointHashMap(0.0, 0.0);
+        SalesPoint salesPoint2 = new SalesPointHashMapUuid(0.0, 0.0);
+        assertTrue(salesPoint1.equals(salesPoint2) && salesPoint2.equals(salesPoint1));
+        assertTrue(salesPoint1.hashCode() == salesPoint2.hashCode());
+    }
+
+    @Test
     public void testNotEquals() {
         SalesPoint salesPoint1 = new SalesPointHashMap(0.1, 0.0);
         SalesPoint salesPoint2 = new SalesPointHashMap(0.0, 0.0);
