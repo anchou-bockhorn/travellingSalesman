@@ -29,21 +29,24 @@ public abstract class SalesPoint {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof SalesPointHashMap)) {
-            return false;
-        }
-        if (this == object) {
-            return true;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !getClass().getSuperclass().isAssignableFrom(o.getClass())) return false;
 
-        return xCoordinate == ((SalesPoint) object).xCoordinate
-            && yCoordinate == ((SalesPoint) object).yCoordinate;
+        SalesPoint that = (SalesPoint) o;
+
+        if (Double.compare(that.xCoordinate, xCoordinate) != 0) return false;
+        return Double.compare(that.yCoordinate, yCoordinate) == 0;
     }
 
     @Override
     public int hashCode() {
-        int result = 17 * 31 + Double.valueOf(xCoordinate).intValue();
-        return result * 31 + Double.valueOf(xCoordinate).intValue();
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(xCoordinate);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(yCoordinate);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }
