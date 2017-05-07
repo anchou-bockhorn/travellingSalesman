@@ -7,15 +7,15 @@ import java.util.logging.Logger;
 import com.sun.istack.internal.Nullable;
 import life.connect_it.travellingsalesman.salespoint.SalesPoint;
 
-public class Map {
+public class SalesManMap {
     private double xBorder = 0;
     private double yBorder = 0;
 
     @Nullable private ArrayList<SalesPoint> salesPoints = new ArrayList<>();
 
-    private static final Logger logger = Logger.getLogger(Map.class.getName());
+    private static final Logger logger = Logger.getLogger(SalesManMap.class.getName());
 
-    public Map(@Nullable List<SalesPoint> salesPoints) {
+    public SalesManMap(@Nullable List<SalesPoint> salesPoints) {
         if (salesPoints != null) {
             salesPoints.forEach(salesPoint -> addSalesPoint(salesPoint));
         }

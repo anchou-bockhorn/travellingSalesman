@@ -13,18 +13,18 @@ import life.connect_it.travellingsalesman.salespoint.SalesPoint;
 import static org.easymock.EasyMock.*;
 import static org.testng.Assert.*;
 
-public class MapTest {
-    private Map map;
+public class SalesManMapTest {
+    private SalesManMap salesManMap;
     private IMocksControl mocksControl = EasyMock.createControl();
 
     @BeforeMethod
     public void setup() {
-        map = new Map(null);
+        salesManMap = new SalesManMap(null);
     }
 
     @AfterMethod
     public void cleanUp() {
-        map = null;
+        salesManMap = null;
         mocksControl.verify();
         mocksControl.reset();
     }
@@ -46,12 +46,12 @@ public class MapTest {
 
         mocksControl.replay();
 
-        map.addSalesPoint(salesPoint);
-        map.addSalesPoint(salesPoint);
+        salesManMap.addSalesPoint(salesPoint);
+        salesManMap.addSalesPoint(salesPoint);
 
-        assertEquals(map.getSalesPoints().size(), 1);
-        assertEquals(map.getXBorder(), 0.0);
-        assertEquals(map.getYBorder(), 0.0);
+        assertEquals(salesManMap.getSalesPoints().size(), 1);
+        assertEquals(salesManMap.getXBorder(), 0.0);
+        assertEquals(salesManMap.getYBorder(), 0.0);
     }
 
     @Test(dataProvider = "getSalesPointsData")
@@ -60,12 +60,12 @@ public class MapTest {
 
         mocksControl.replay();
         salesPoints.forEach(salesPoint -> {
-            map.addSalesPoint(salesPoint);
+            salesManMap.addSalesPoint(salesPoint);
         });
 
-        assertEquals(map.getSalesPoints().size(), salesPointCoordinates.length);
-        assertEquals(map.getXBorder(), maxCoordinates[0]);
-        assertEquals(map.getYBorder(), maxCoordinates[1]);
+        assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.length);
+        assertEquals(salesManMap.getXBorder(), maxCoordinates[0]);
+        assertEquals(salesManMap.getYBorder(), maxCoordinates[1]);
     }
 
     @Test(dataProvider = "getSalesPointsData")
@@ -73,11 +73,11 @@ public class MapTest {
         List<SalesPoint> salesPoints = getSalesPointMocksList(salesPointCoordinates);
 
         mocksControl.replay();
-        Map map = new Map(salesPoints);
+        SalesManMap salesManMap = new SalesManMap(salesPoints);
 
-        assertEquals(map.getSalesPoints().size(), salesPointCoordinates.length);
-        assertEquals(map.getXBorder(), maxCoordinates[0]);
-        assertEquals(map.getYBorder(), maxCoordinates[1]);
+        assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.length);
+        assertEquals(salesManMap.getXBorder(), maxCoordinates[0]);
+        assertEquals(salesManMap.getYBorder(), maxCoordinates[1]);
     }
 
     private List<SalesPoint> getSalesPointMocksList(double[][] salesPointCoordinates) {
