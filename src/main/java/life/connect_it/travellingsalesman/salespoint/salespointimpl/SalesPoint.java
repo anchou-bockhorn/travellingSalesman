@@ -1,4 +1,4 @@
-package life.connect_it.travellingsalesman.salespoint;
+package life.connect_it.travellingsalesman.salespoint.salespointimpl;
 
 public abstract class SalesPoint {
     double xCoordinate;

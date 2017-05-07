@@ -8,46 +8,57 @@ import org.testng.annotations.*;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 
-import life.connect_it.travellingsalesman.salespoint.SalesPoint;
+import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
+import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPointFactory;
 
 import static org.easymock.EasyMock.*;
 import static org.testng.Assert.*;
 
 public class SalesManMapTest {
-    private SalesManMap salesManMap;
     private IMocksControl mocksControl = EasyMock.createControl();
 
     @BeforeMethod
     public void setup() {
-        salesManMap = new SalesManMap(null);
+        mocksControl.reset();
     }
 
     @AfterMethod
     public void cleanUp() {
-        salesManMap = null;
         mocksControl.verify();
-        mocksControl.reset();
     }
 
     @DataProvider
     public Object[][] getSalesPointsData() {
         return new Object[][]{
-            {new double[][]{{1.0, 3.0}}, new double[]{1.0, 3.0}},
-            {new double[][]{{1.0, 3.1}, {5.9, 2.1}, {9.0, 0.2}, {8.0, 3.1}}, new double[]{9.0, 3.1}},
-            {new double[][]{{0.1, 2.9}, {0.0, 0.0}}, new double[]{0.1, 2.9}},
+            {
+                Arrays.asList(new double[]{3.0, 2.0}),
+                new double[]{3.0, 2.0}
+            },
+            {
+                Arrays.asList(new double[]{1.0, 3.1},
+                    new double[]{5.9, 2.1},
+                    new double[]{8.0, 3.1},
+                    new double[]{9.0, 0.2}),
+                new double[]{9.0, 3.1}},
+            {
+                Arrays.asList(new double[]{0.1, 2.9}, new double[]{0.0, 0.0}),
+                new double[]{0.1, 2.9}}
         };
     }
 
     @Test()
     public void testAddDuplicateSalesPoint() throws Exception {
         SalesPoint salesPoint = mocksControl.createMock(SalesPoint.class);
-        expect(salesPoint.getXCoordinate()).andReturn(0.0);
-        expect(salesPoint.getYCoordinate()).andReturn(0.0);
+
+        SalesPointFactory salesPointFactory = mocksControl.createMock(SalesPointFactory.class);
+        expect(salesPointFactory.getSalesPoint(0.0, 0.0)).andReturn(salesPoint).times(2);
 
         mocksControl.replay();
 
-        salesManMap.addSalesPoint(salesPoint);
-        salesManMap.addSalesPoint(salesPoint);
+        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory);
+
+        salesManMap.addSalesPoint(0.0, 0.0);
+        salesManMap.addSalesPoint(0.0, 0.0);
 
         assertEquals(salesManMap.getSalesPoints().size(), 1);
         assertEquals(salesManMap.getXBorder(), 0.0);
@@ -55,43 +66,46 @@ public class SalesManMapTest {
     }
 
     @Test(dataProvider = "getSalesPointsData")
-    public void testAddSalesPoint(double[][] salesPointCoordinates, double[] maxCoordinates) throws Exception {
-        List<SalesPoint> salesPoints = getSalesPointMocksList(salesPointCoordinates);
+    public void testAddSalesPoint(List<double[]> salesPointCoordinates, double[] maxCoordinates) throws Exception {
+        SalesPointFactory salesPointFactory = mocksControl.createMock(SalesPointFactory.class);
+        createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
 
         mocksControl.replay();
-        salesPoints.forEach(salesPoint -> {
-            salesManMap.addSalesPoint(salesPoint);
-        });
 
-        assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.length);
+        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory);
+        salesPointCoordinates.forEach(coordinate -> salesManMap.addSalesPoint(coordinate[0], coordinate[1]));
+
+        assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.size());
         assertEquals(salesManMap.getXBorder(), maxCoordinates[0]);
         assertEquals(salesManMap.getYBorder(), maxCoordinates[1]);
     }
 
     @Test(dataProvider = "getSalesPointsData")
-    public void testAddSalesPointByConstructor(double[][] salesPointCoordinates, double[] maxCoordinates) throws Exception {
-        List<SalesPoint> salesPoints = getSalesPointMocksList(salesPointCoordinates);
+    public void testAddSalesPointByConstructor(List<double[]> salesPointCoordinates, double[] maxCoordinates) throws Exception {
+        SalesPointFactory salesPointFactory = mocksControl.createMock(SalesPointFactory.class);
+        createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
 
         mocksControl.replay();
-        SalesManMap salesManMap = new SalesManMap(salesPoints);
+        SalesManMap salesManMap = new SalesManMap(salesPointCoordinates, salesPointFactory);
 
-        assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.length);
+        assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.size());
         assertEquals(salesManMap.getXBorder(), maxCoordinates[0]);
         assertEquals(salesManMap.getYBorder(), maxCoordinates[1]);
     }
 
-    private List<SalesPoint> getSalesPointMocksList(double[][] salesPointCoordinates) {
-        return Arrays.stream(salesPointCoordinates)
-            .map(salesPointCoordinate ->
-                createAndExpectSalesPointMocks(salesPointCoordinate, salesPointCoordinates.length))
+    private List<SalesPoint> createSalesPointMocksList(List<double[]> salesPointCoordinates, SalesPointFactory salesPointFactory) {
+        return salesPointCoordinates.stream().map(salesPointCoordinate ->
+                createAndExpectSalesPointMocks(salesPointCoordinate, salesPointCoordinates.size(), salesPointFactory))
             .collect(Collectors.toList());
     }
 
-    private SalesPoint createAndExpectSalesPointMocks(double[] salesPointCoordinate, int salesPointsNumber) {
+    private SalesPoint createAndExpectSalesPointMocks(double[] salesPointCoordinate,
+                                                      int salesPointsNumber,
+                                                      SalesPointFactory salesPointFactory) {
         SalesPoint salesPoint = mocksControl.createMock(SalesPoint.class);
-        expect(salesPoint.getXCoordinate()).andReturn(salesPointCoordinate[0]);
-        expect(salesPoint.getYCoordinate()).andReturn(salesPointCoordinate[1]);
         expectAddTargetCalls(salesPoint, salesPointsNumber - 1);
+
+        expect(salesPointFactory.getSalesPoint(salesPointCoordinate[0], salesPointCoordinate[1])).andReturn(salesPoint);
         return salesPoint;
     }
 

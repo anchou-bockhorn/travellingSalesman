@@ -3,6 +3,10 @@ package life.connect_it.travellingsalesman.salespoint;
 import org.testng.annotations.*;
 import org.easymock.EasyMock;
 
+import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
+import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPointHashMap;
+import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPointHashMapUuid;
+
 import static org.easymock.EasyMock.*;
 import static org.testng.Assert.*;
 import static org.testng.AssertJUnit.assertTrue;
