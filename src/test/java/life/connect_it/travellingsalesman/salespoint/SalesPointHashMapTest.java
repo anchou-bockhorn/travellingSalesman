@@ -4,7 +4,7 @@ import org.testng.annotations.*;
 import org.easymock.EasyMock;
 
 import static org.easymock.EasyMock.*;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.*;
 
 public class SalesPointHashMapTest {
 
@@ -21,7 +21,7 @@ public class SalesPointHashMapTest {
         salesPoint.addTarget(salesPointMock);
 
         verify(salesPointMock);
-        assertEquals(salesPoint.getTargetDistances().size(), 1);
-        assertEquals(salesPoint.getTargetDistances().keySet().iterator().next(), salesPointMock);
+        assertEquals(salesPoint.getTargetDistancesNumber(), 1);
+        assertNotEquals(salesPoint.getTargetDistance(salesPointMock), null);
     }
 }

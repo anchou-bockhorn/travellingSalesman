@@ -5,6 +5,8 @@ public abstract class SalesPoint {
     double yCoordinate;
 
     public abstract SalesPoint addTarget(SalesPoint salesPoint);
+    public abstract Double getTargetDistance(SalesPoint salesPoint);
+    public abstract int getTargetDistancesNumber();
 
     public SalesPoint(double xCoordinate, double yCoordinate) {
         if (xCoordinate < 0 || yCoordinate < 0) {

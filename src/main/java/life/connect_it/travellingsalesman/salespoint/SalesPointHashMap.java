@@ -9,12 +9,19 @@ public class SalesPointHashMap extends SalesPoint {
         super(xCoordinate, yCoordinate);
     }
 
+    @Override
     public SalesPoint addTarget(SalesPoint salesPoint) {
         targetDistances.put(salesPoint, this.calculateDistance(salesPoint));
         return salesPoint;
     }
 
-    public HashMap<SalesPoint, Double> getTargetDistances() {
-        return targetDistances;
+    @Override
+    public Double getTargetDistance(SalesPoint salesPoint) {
+        return targetDistances.get(salesPoint);
+    }
+
+    @Override
+    public int getTargetDistancesNumber() {
+        return targetDistances.size();
     }
 }
