@@ -5,7 +5,7 @@ import life.connect_it.travellingsalesman.salespoint.salespointimpl.BasicSalesPo
 
 public class BasicSalesPointFactory implements SalesPointFactory {
 
-    public BasicSalesPoint getSalesPoint(double xCoordinate, double yCoordinate) {
+    public BasicSalesPoint getSalesPoint(double xCoordinate, double yCoordinate) throws IllegalArgumentException {
         return new BasicSalesPoint(xCoordinate, yCoordinate);
     }
 }

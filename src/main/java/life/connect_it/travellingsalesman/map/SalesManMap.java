@@ -9,6 +9,13 @@ import life.connect_it.travellingsalesman.helper.WitnessCalculator;
 import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPointFactory;
 
+/**
+ * Represents a two dimensional space with nodes of type SalesPoint in it and a rectangular,
+ * automatically calculated border just as wide as necessary to contain all added nodes.
+ *
+ * @author Anchou Bockhorn - anchou.bockhorn@gmail.com
+ * @see SalesPoint
+ */
 public class SalesManMap {
     private static final Logger logger = Logger.getLogger(SalesManMap.class.getName());
 
@@ -31,6 +38,13 @@ public class SalesManMap {
         }
     }
 
+    /**
+     * Creates and adds a new SalesPoint to the this and recalculates the border
+     *
+     * @param xCoordinate x-coordinate of de newly generated SalesPoint
+     * @param yCoordinate y-coordinate of de newly generated SalesPoint
+     * @return the newly created SalesPoint
+     */
     public SalesPoint addSalesPoint(double xCoordinate, double yCoordinate) {
         SalesPoint salesPoint = salesPointFactory.getSalesPoint(xCoordinate, yCoordinate);
         if (!salesPoints.contains(salesPoint)) {

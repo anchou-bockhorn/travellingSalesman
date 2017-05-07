@@ -5,7 +5,7 @@ import life.connect_it.travellingsalesman.salespoint.salespointimpl.UuidSalesPoi
 
 public class UuidSalesPointFactory implements SalesPointFactory {
 
-    public UuidSalesPoint getSalesPoint(double xCoordinate, double yCoordinate) {
+    public UuidSalesPoint getSalesPoint(double xCoordinate, double yCoordinate) throws IllegalArgumentException {
         return new UuidSalesPoint(xCoordinate, yCoordinate);
     }
 }

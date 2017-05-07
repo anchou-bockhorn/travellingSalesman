@@ -1,14 +1,16 @@
 package life.connect_it.travellingsalesman.salespoint.salespointimpl;
 
+/**
+ * Represents a node in a two dimensional space, containing a collection of calculated
+ * distances to other nodes for better performance
+ *
+ * @author Anchou Bockhorn - anchou.bockhorn@gmail.com
+ */
 public abstract class SalesPoint {
-    double xCoordinate;
-    double yCoordinate;
+    final double xCoordinate;
+    final double yCoordinate;
 
-    public abstract SalesPoint addTarget(SalesPoint salesPoint);
-    public abstract Double getTargetDistance(SalesPoint salesPoint);
-    public abstract int getTargetDistancesNumber();
-
-    public SalesPoint(double xCoordinate, double yCoordinate) {
+    public SalesPoint(double xCoordinate, double yCoordinate) throws IllegalArgumentException {
         if (xCoordinate < 0 || yCoordinate < 0) {
             throw new IllegalArgumentException("Negative values are not supported for SalesPoint coordinates");
         }
@@ -16,15 +18,33 @@ public abstract class SalesPoint {
         this.yCoordinate = yCoordinate;
     }
 
-    public double getXCoordinate() {
+    /**
+     * Calculates the distance to the target node and saves it. The calculated distance can be accessed
+     * by calling getTargetDistance function
+     *
+     * @param target
+     * @return this
+     */
+    public abstract SalesPoint addTarget(SalesPoint target);
+
+    /**
+     * Reads the distance from this to the passed SalesPoint, if the passed SalesPoint was previously
+     * registered with addTarget method, else the null is returned
+     *
+     * @param salesPoint
+     * @return the distance from this to the passed SalesPoint or null
+     */
+    protected abstract Double getTargetDistance(SalesPoint salesPoint);
+
+    double getXCoordinate() {
         return xCoordinate;
     }
 
-    public double getYCoordinate() {
+    double getYCoordinate() {
         return yCoordinate;
     }
 
-    public double calculateDistance(SalesPoint target) {
+    double calculateDistance(SalesPoint target) {
         double xDistance = Math.pow(this.getXCoordinate() - target.getXCoordinate(), 2);
         double yDistance = Math.pow(this.getYCoordinate() - target.getYCoordinate(), 2);
         return Math.sqrt(xDistance + yDistance);

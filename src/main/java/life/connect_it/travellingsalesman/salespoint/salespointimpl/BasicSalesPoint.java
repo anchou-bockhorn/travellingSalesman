@@ -10,18 +10,13 @@ public class BasicSalesPoint extends SalesPoint {
     }
 
     @Override
-    public SalesPoint addTarget(SalesPoint salesPoint) {
-        targetDistances.put(salesPoint, this.calculateDistance(salesPoint));
-        return salesPoint;
+    public SalesPoint addTarget(SalesPoint target) {
+        targetDistances.put(target, this.calculateDistance(target));
+        return this;
     }
 
     @Override
     public Double getTargetDistance(SalesPoint salesPoint) {
         return targetDistances.get(salesPoint);
-    }
-
-    @Override
-    public int getTargetDistancesNumber() {
-        return targetDistances.size();
     }
 }

@@ -21,7 +21,6 @@ public class BasicSalesPointTest {
         salesPoint.addTarget(salesPointMock);
 
         verify(salesPointMock);
-        assertEquals(salesPoint.getTargetDistancesNumber(), 1);
         assertNotNull(salesPoint.getTargetDistance(salesPointMock));
     }
 }
