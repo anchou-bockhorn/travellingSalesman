@@ -1,4 +1,4 @@
-package life.connect_it.travellingsalesman.salespoint;
+package life.connect_it.travellingsalesman.salespoint.salespointimpl;
 
 import org.testng.annotations.*;
 import org.easymock.EasyMock;
