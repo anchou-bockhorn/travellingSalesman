@@ -3,10 +3,6 @@ package life.connect_it.travellingsalesman.salespoint.salespointimpl;
 import org.testng.annotations.*;
 import org.easymock.EasyMock;
 
-import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
-import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPointHashMap;
-import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPointHashMapUuid;
-
 import static org.easymock.EasyMock.*;
 import static org.testng.Assert.*;
 import static org.testng.AssertJUnit.assertTrue;
@@ -29,7 +25,7 @@ public class SalesPointTest {
 
         replay(salesPointMock);
 
-        SalesPoint salesPoint = new SalesPointHashMap(0.0, 0.0);
+        SalesPoint salesPoint = new BasicSalesPoint(0.0, 0.0);
 
         double distance = salesPoint.calculateDistance(salesPointMock);
 
@@ -48,34 +44,34 @@ public class SalesPointTest {
     @Test(expectedExceptions = IllegalArgumentException.class,
         dataProvider = "getIllegalConstructorArgumentExceptionData")
     public void testIllegalConstructorArgumentException(double[] illegalArguments) {
-        new SalesPointHashMap(illegalArguments[0], illegalArguments[1]);
+        new BasicSalesPoint(illegalArguments[0], illegalArguments[1]);
     }
 
     @Test
     public void testEquals() {
-        SalesPoint salesPoint1 = new SalesPointHashMap(0.0, 0.0);
-        SalesPoint salesPoint2 = new SalesPointHashMap(0.0, 0.0);
+        SalesPoint salesPoint1 = new BasicSalesPoint(0.0, 0.0);
+        SalesPoint salesPoint2 = new BasicSalesPoint(0.0, 0.0);
         assertTrue(salesPoint1.equals(salesPoint2) && salesPoint2.equals(salesPoint1));
         assertTrue(salesPoint1.hashCode() == salesPoint2.hashCode());
     }
 
     @Test
     public void testEqualsDifferentClasses() {
-        SalesPoint salesPoint1 = new SalesPointHashMap(0.0, 0.0);
-        SalesPoint salesPoint2 = new SalesPointHashMapUuid(0.0, 0.0);
+        SalesPoint salesPoint1 = new BasicSalesPoint(0.0, 0.0);
+        SalesPoint salesPoint2 = new UuidSalesPoint(0.0, 0.0);
         assertTrue(salesPoint1.equals(salesPoint2) && salesPoint2.equals(salesPoint1));
         assertTrue(salesPoint1.hashCode() == salesPoint2.hashCode());
     }
 
     @Test
     public void testNotEquals() {
-        SalesPoint salesPoint1 = new SalesPointHashMap(0.1, 0.0);
-        SalesPoint salesPoint2 = new SalesPointHashMap(0.0, 0.0);
+        SalesPoint salesPoint1 = new BasicSalesPoint(0.1, 0.0);
+        SalesPoint salesPoint2 = new BasicSalesPoint(0.0, 0.0);
         assertFalse(salesPoint1.equals(salesPoint2) || salesPoint2.equals(salesPoint1));
         assertFalse(salesPoint1.hashCode() == salesPoint2.hashCode());
 
-        SalesPoint salesPoint3 = new SalesPointHashMap(0.0, 0.000000001);
-        SalesPoint salesPoint4 = new SalesPointHashMap(0.0, 0.0);
+        SalesPoint salesPoint3 = new BasicSalesPoint(0.0, 0.000000001);
+        SalesPoint salesPoint4 = new BasicSalesPoint(0.0, 0.0);
         assertFalse(salesPoint3.equals(salesPoint4) || salesPoint4.equals(salesPoint3));
         assertFalse(salesPoint3.hashCode() == salesPoint4.hashCode());
     }

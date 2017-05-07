@@ -2,10 +2,10 @@ package life.connect_it.travellingsalesman.salespoint.salespointimpl;
 
 import java.util.HashMap;
 
-public class SalesPointHashMap extends SalesPoint {
+public class BasicSalesPoint extends SalesPoint {
     private HashMap<SalesPoint, Double> targetDistances = new HashMap<>();
 
-    public SalesPointHashMap(double xCoordinate, double yCoordinate) {
+    public BasicSalesPoint(double xCoordinate, double yCoordinate) {
         super(xCoordinate, yCoordinate);
     }
 

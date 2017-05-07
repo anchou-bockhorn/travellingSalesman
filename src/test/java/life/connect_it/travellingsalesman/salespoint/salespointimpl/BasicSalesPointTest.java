@@ -6,7 +6,7 @@ import org.easymock.EasyMock;
 import static org.easymock.EasyMock.*;
 import static org.testng.Assert.*;
 
-public class SalesPointHashMapTest {
+public class BasicSalesPointTest {
 
     @Test
     public void testAddTarget() throws Exception {
@@ -16,12 +16,12 @@ public class SalesPointHashMapTest {
 
         replay(salesPointMock);
 
-        SalesPointHashMap salesPoint = new SalesPointHashMap(0.0, 0.0);
+        BasicSalesPoint salesPoint = new BasicSalesPoint(0.0, 0.0);
 
         salesPoint.addTarget(salesPointMock);
 
         verify(salesPointMock);
         assertEquals(salesPoint.getTargetDistancesNumber(), 1);
-        assertNotEquals(salesPoint.getTargetDistance(salesPointMock), null);
+        assertNotNull(salesPoint.getTargetDistance(salesPointMock));
     }
 }

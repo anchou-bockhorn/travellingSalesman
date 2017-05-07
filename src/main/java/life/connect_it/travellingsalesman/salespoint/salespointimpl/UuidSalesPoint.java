@@ -3,30 +3,30 @@ package life.connect_it.travellingsalesman.salespoint.salespointimpl;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class SalesPointHashMapUuid extends SalesPoint {
+public class UuidSalesPoint extends SalesPoint {
     private final UUID uuid = UUID.randomUUID();
     private HashMap<UUID, Double> targetDistances = new HashMap<>();
 
-    public SalesPointHashMapUuid(double xCoordinate, double yCoordinate) {
+    public UuidSalesPoint(double xCoordinate, double yCoordinate) {
         super(xCoordinate, yCoordinate);
     }
 
     @Override
     public SalesPoint addTarget(SalesPoint salesPoint) {
-        if (!(salesPoint instanceof SalesPointHashMapUuid)) {
+        if (!(salesPoint instanceof UuidSalesPoint)) {
             throw new IllegalArgumentException("Not allowed to mix SalesPointHashMapUuid with SalesPoints without UUID");
         }
-        UUID salesPointUuid = ((SalesPointHashMapUuid) salesPoint).getUuid();
+        UUID salesPointUuid = ((UuidSalesPoint) salesPoint).getUuid();
         targetDistances.put(salesPointUuid, this.calculateDistance(salesPoint));
         return salesPoint;
     }
 
     @Override
     public Double getTargetDistance(SalesPoint salesPoint) {
-        if (!(salesPoint instanceof SalesPointHashMapUuid)) {
+        if (!(salesPoint instanceof UuidSalesPoint)) {
             throw new IllegalArgumentException("Not allowed to mix SalesPointHashMapUuid with SalesPoints without UUID");
         }
-        return targetDistances.get(((SalesPointHashMapUuid) salesPoint).getUuid());
+        return targetDistances.get(((UuidSalesPoint) salesPoint).getUuid());
     }
 
     @Override
