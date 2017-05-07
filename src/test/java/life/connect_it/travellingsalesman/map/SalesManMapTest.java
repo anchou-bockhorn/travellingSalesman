@@ -1,5 +1,6 @@
 package life.connect_it.travellingsalesman.map;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +9,7 @@ import org.testng.annotations.*;
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 
+import life.connect_it.travellingsalesman.helper.WitnessCalculator;
 import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPointFactory;
 
@@ -16,6 +18,7 @@ import static org.testng.Assert.*;
 
 public class SalesManMapTest {
     private IMocksControl mocksControl = EasyMock.createControl();
+    private WitnessCalculator witnessCalculator = mocksControl.createMock(WitnessCalculator.class);
 
     @BeforeMethod
     public void setup() {
@@ -55,7 +58,7 @@ public class SalesManMapTest {
 
         mocksControl.replay();
 
-        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory);
+        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory, witnessCalculator);
 
         salesManMap.addSalesPoint(0.0, 0.0);
         salesManMap.addSalesPoint(0.0, 0.0);
@@ -72,7 +75,7 @@ public class SalesManMapTest {
 
         mocksControl.replay();
 
-        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory);
+        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory, witnessCalculator);
         salesPointCoordinates.forEach(coordinate -> salesManMap.addSalesPoint(coordinate[0], coordinate[1]));
 
         assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.size());
@@ -86,16 +89,27 @@ public class SalesManMapTest {
         createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
 
         mocksControl.replay();
-        SalesManMap salesManMap = new SalesManMap(salesPointCoordinates, salesPointFactory);
+        SalesManMap salesManMap = new SalesManMap(salesPointCoordinates, salesPointFactory, witnessCalculator);
 
         assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.size());
         assertEquals(salesManMap.getXBorder(), maxCoordinates[0]);
         assertEquals(salesManMap.getYBorder(), maxCoordinates[1]);
     }
 
-    private List<SalesPoint> createSalesPointMocksList(List<double[]> salesPointCoordinates, SalesPointFactory salesPointFactory) {
+    @Test
+    public void testGetWitnesses() throws Exception {
+        expect(witnessCalculator.calculateWitnesses(new ArrayList<>()))
+            .andReturn(new ArrayList<ArrayList<SalesPoint>>());
+
+        mocksControl.replay();
+
+        new SalesManMap(null, null, witnessCalculator).getWitnesses();
+    }
+
+    private List<SalesPoint> createSalesPointMocksList(List<double[]> salesPointCoordinates,
+                                                       SalesPointFactory salesPointFactory) {
         return salesPointCoordinates.stream().map(salesPointCoordinate ->
-                createAndExpectSalesPointMocks(salesPointCoordinate, salesPointCoordinates.size(), salesPointFactory))
+            createAndExpectSalesPointMocks(salesPointCoordinate, salesPointCoordinates.size(), salesPointFactory))
             .collect(Collectors.toList());
     }
 

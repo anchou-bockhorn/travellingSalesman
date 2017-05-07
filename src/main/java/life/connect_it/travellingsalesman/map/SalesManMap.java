@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import com.sun.istack.internal.Nullable;
+import life.connect_it.travellingsalesman.helper.WitnessCalculator;
 import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPointFactory;
 
 public class SalesManMap {
     private static final Logger logger = Logger.getLogger(SalesManMap.class.getName());
 
+    private final WitnessCalculator witnessCalculator;
     private final SalesPointFactory salesPointFactory;
 
     private double xBorder = 0;
@@ -18,10 +20,13 @@ public class SalesManMap {
 
     @Nullable private ArrayList<SalesPoint> salesPoints = new ArrayList<>();
 
-    public SalesManMap(List<double[]> salesPointsCoordinates, SalesPointFactory salesPointFactory) {
+    public SalesManMap(List<double[]> initialSalesPointsCoordinates,
+                       SalesPointFactory salesPointFactory,
+                       WitnessCalculator witnessCalculator) {
         this.salesPointFactory = salesPointFactory;
-        if (salesPointsCoordinates != null) {
-            salesPointsCoordinates
+        this.witnessCalculator = witnessCalculator;
+        if (initialSalesPointsCoordinates != null) {
+            initialSalesPointsCoordinates
                 .forEach(salesPointCoordinates -> addSalesPoint(salesPointCoordinates[0], salesPointCoordinates[1]));
         }
     }
@@ -67,5 +72,9 @@ public class SalesManMap {
             return xCoordinate;
         }
         return xBorder;
+    }
+
+    public ArrayList<ArrayList<SalesPoint>> getWitnesses() {
+        return witnessCalculator.calculateWitnesses(salesPoints);
     }
 }
