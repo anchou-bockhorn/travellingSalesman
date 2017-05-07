@@ -95,12 +95,10 @@ public class SalesManMapTest {
         return salesPoint;
     }
 
-    private SalesPoint expectAddTargetCalls(SalesPoint salesPoint, int expectedCallsNumber) {
-        for (int i = 0; i < expectedCallsNumber; i++) {
+    private void expectAddTargetCalls(SalesPoint salesPoint, int expectedCallsNumber) {
+        if (expectedCallsNumber > 0) {
             SalesPoint anySalesPoint = anyObject(SalesPoint.class);
-            expect(salesPoint.addTarget(anySalesPoint)).andReturn(anySalesPoint); // .times(0) throws Exception
+            expect(salesPoint.addTarget(anySalesPoint)).andReturn(anySalesPoint).times(expectedCallsNumber);
         }
-        return salesPoint;
     }
-
 }
