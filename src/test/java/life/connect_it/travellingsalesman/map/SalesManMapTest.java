@@ -33,23 +33,36 @@ public class SalesManMapTest {
     @DataProvider
     public Object[][] getSalesPointsData() {
         return new Object[][]{
-            {
-                Arrays.asList(new double[]{3.0, 2.0}),
-                new double[]{3.0, 2.0}
-            },
-            {
-                Arrays.asList(new double[]{1.0, 3.1},
-                    new double[]{5.9, 2.1},
-                    new double[]{8.0, 3.1},
-                    new double[]{9.0, 0.2}),
-                new double[]{9.0, 3.1}},
-            {
-                Arrays.asList(new double[]{0.1, 2.9}, new double[]{0.0, 0.0}),
-                new double[]{0.1, 2.9}}
+            {Arrays.asList(new double[]{3.0, 2.0})},
+            {Arrays.asList(new double[]{1.0, 3.1},
+                new double[]{5.9, 2.1},
+                new double[]{8.0, 3.1},
+                new double[]{9.0, 0.2})},
+            {Arrays.asList(new double[]{0.1, 2.9})},
         };
     }
 
-    @Test()
+    @Test(dataProvider = "getSalesPointsData")
+    public void testAddSalesPoint(List<double[]> salesPointCoordinates) throws Exception {
+        SalesPointFactory salesPointFactory = mocksControl.createMock(SalesPointFactory.class);
+        createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
+
+        mocksControl.replay();
+
+        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory, witnessCalculator);
+        salesPointCoordinates.forEach(coordinate -> salesManMap.addSalesPoint(coordinate[0], coordinate[1]));
+    }
+
+    @Test(dataProvider = "getSalesPointsData")
+    public void testAddSalesPointOnInstantiate(List<double[]> salesPointCoordinates) throws Exception {
+        SalesPointFactory salesPointFactory = mocksControl.createMock(SalesPointFactory.class);
+        createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
+
+        mocksControl.replay();
+        new SalesManMap(salesPointCoordinates, salesPointFactory, witnessCalculator);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void testAddDuplicateSalesPoint() throws Exception {
         SalesPoint salesPoint = mocksControl.createMock(SalesPoint.class);
 
@@ -62,44 +75,40 @@ public class SalesManMapTest {
 
         salesManMap.addSalesPoint(0.0, 0.0);
         salesManMap.addSalesPoint(0.0, 0.0);
-
-        assertEquals(salesManMap.getSalesPoints().size(), 1);
-        assertEquals(salesManMap.getXBorder(), 0.0);
-        assertEquals(salesManMap.getYBorder(), 0.0);
     }
 
     @Test(dataProvider = "getSalesPointsData")
-    public void testAddSalesPoint(List<double[]> salesPointCoordinates, double[] maxCoordinates) throws Exception {
+    public void testRemoveSalesPoint(List<double[]> salesPointCoordinates) throws Exception {
         SalesPointFactory salesPointFactory = mocksControl.createMock(SalesPointFactory.class);
-        createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
+        List<SalesPoint> salesPoints = createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
+        expect(salesPointFactory.getSalesPoint(salesPointCoordinates.get(0)[0], salesPointCoordinates.get(0)[1]))
+            .andReturn(salesPoints.get(0));
+
+        SalesPoint pointToRemove = salesPoints.get(0);
+        salesPoints.remove(pointToRemove);
+        salesPoints.forEach(salesPoint -> expect(salesPoint.removeTarget(pointToRemove)).andReturn(salesPoint));
 
         mocksControl.replay();
-
-        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory, witnessCalculator);
-        salesPointCoordinates.forEach(coordinate -> salesManMap.addSalesPoint(coordinate[0], coordinate[1]));
-
-        assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.size());
-        assertEquals(salesManMap.getXBorder(), maxCoordinates[0]);
-        assertEquals(salesManMap.getYBorder(), maxCoordinates[1]);
+        new SalesManMap(salesPointCoordinates, salesPointFactory, witnessCalculator)
+            .removeSalesPoint(salesPointCoordinates.get(0)[0], salesPointCoordinates.get(0)[1]);
     }
 
-    @Test(dataProvider = "getSalesPointsData")
-    public void testAddSalesPointByConstructor(List<double[]> salesPointCoordinates, double[] maxCoordinates) throws Exception {
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testRemoveNotExistingSalesPoint() throws Exception {
         SalesPointFactory salesPointFactory = mocksControl.createMock(SalesPointFactory.class);
-        createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
+        expect(salesPointFactory.getSalesPoint(0.0, 0.0))
+            .andReturn(mocksControl.createMock(SalesPoint.class));
 
         mocksControl.replay();
-        SalesManMap salesManMap = new SalesManMap(salesPointCoordinates, salesPointFactory, witnessCalculator);
 
-        assertEquals(salesManMap.getSalesPoints().size(), salesPointCoordinates.size());
-        assertEquals(salesManMap.getXBorder(), maxCoordinates[0]);
-        assertEquals(salesManMap.getYBorder(), maxCoordinates[1]);
+        new SalesManMap(null, salesPointFactory, witnessCalculator)
+            .removeSalesPoint(0.0, 0.0);
     }
 
     @Test
     public void testGetWitnesses() throws Exception {
         expect(witnessCalculator.calculateWitnesses(new ArrayList<>()))
-            .andReturn(new ArrayList<ArrayList<SalesPoint>>());
+            .andReturn(new ArrayList<>());
 
         mocksControl.replay();
 

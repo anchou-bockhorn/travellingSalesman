@@ -21,9 +21,6 @@ public class SalesManMap {
     private final WitnessCalculator witnessCalculator;
     private final SalesPointFactory salesPointFactory;
 
-    private double xBorder = 0;
-    private double yBorder = 0;
-
     private ArrayList<SalesPoint> salesPoints = new ArrayList<>();
 
     public SalesManMap(List<double[]> initialSalesPointsCoordinates,
@@ -38,7 +35,7 @@ public class SalesManMap {
     }
 
     /**
-     * Creates and adds a new SalesPoint to the this and recalculates the border
+     * Creates and adds a new SalesPoint to the this
      *
      * @param xCoordinate x-coordinate of de newly generated SalesPoint
      * @param yCoordinate y-coordinate of de newly generated SalesPoint
@@ -47,47 +44,44 @@ public class SalesManMap {
     public SalesPoint addSalesPoint(double xCoordinate, double yCoordinate) {
         SalesPoint salesPoint = salesPointFactory.getSalesPoint(xCoordinate, yCoordinate);
         if (!salesPoints.contains(salesPoint)) {
-            reevaluateMapBorder(xCoordinate, yCoordinate);
-            updateSalesPointsDistances(salesPoint);
+            updateDistancesAddPoint(salesPoint);
             salesPoints.add(salesPoint);
         } else {
-            logger.info("Duplicate SalesPoint added: " + salesPoint.toString());
+            throw new IllegalArgumentException("Duplicate SalesPoint added: " + salesPoint.toString());
         }
         return salesPoint;
+    }
+
+    /**
+     * Removes a SalesPoint from this collection and form the SalesPoints targetDistance collections
+     *
+     * @param xCoordinate x-coordinate of de newly generated SalesPoint
+     * @param yCoordinate y-coordinate of de newly generated SalesPoint
+     * @return the newly created SalesPoint
+     */
+    public SalesPoint removeSalesPoint(double xCoordinate, double yCoordinate) {
+        SalesPoint salesPoint = salesPointFactory.getSalesPoint(xCoordinate, yCoordinate);
+        if (salesPoints.remove(salesPoint)) {
+            updateDistancesRemovePoint(salesPoint);
+        } else {
+            throw new IllegalArgumentException("Removed SalesPoint: " + salesPoint.toString() + "is not present in" +
+                " collection");
+        }
+        return salesPoint;
+    }
+
+    private void updateDistancesRemovePoint(SalesPoint salesPoint) {
+        salesPoints.forEach(point -> point.removeTarget(salesPoint));
     }
 
     public ArrayList<ArrayList<SalesPoint>> getWitnesses() {
         return witnessCalculator.calculateWitnesses(salesPoints);
     }
 
-    public double getXBorder() {
-        return xBorder;
-    }
-
-    public double getYBorder() {
-        return yBorder;
-    }
-
-    public ArrayList<SalesPoint> getSalesPoints() {
-        return salesPoints;
-    }
-
-    private void updateSalesPointsDistances(SalesPoint newSalesPoint) {
+    private void updateDistancesAddPoint(SalesPoint newSalesPoint) {
         salesPoints.forEach(salesPoint -> {
             newSalesPoint.addTarget(salesPoint);
             salesPoint.addTarget(newSalesPoint);
         });
-    }
-
-    private void reevaluateMapBorder(double xCoordinate, double yCoordinate) {
-        xBorder = updateBorderCoordinate(xCoordinate, xBorder);
-        yBorder = updateBorderCoordinate(yCoordinate, yBorder);
-    }
-
-    private double updateBorderCoordinate(double xCoordinate, double xBorder) {
-        if (xCoordinate > xBorder) {
-            return xCoordinate;
-        }
-        return xBorder;
     }
 }
