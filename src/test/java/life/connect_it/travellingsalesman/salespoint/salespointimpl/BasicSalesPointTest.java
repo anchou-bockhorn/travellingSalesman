@@ -10,17 +10,30 @@ public class BasicSalesPointTest {
 
     @Test
     public void testAddTarget() throws Exception {
-        SalesPoint salesPointMock = EasyMock.mock(SalesPoint.class);
-        expect(salesPointMock.getXCoordinate()).andReturn(0.0);
-        expect(salesPointMock.getYCoordinate()).andReturn(0.0);
+        BasicSalesPoint salesPoint1 = new BasicSalesPoint(0.0, 0.0);
+        BasicSalesPoint salesPoint2 = new BasicSalesPoint(0.1, 0.1);
 
-        replay(salesPointMock);
+        salesPoint1.addTarget(salesPoint2);
 
-        BasicSalesPoint salesPoint = new BasicSalesPoint(0.0, 0.0);
+        assertNotNull(salesPoint1.getTargetDistance(salesPoint2));
+    }
 
-        salesPoint.addTarget(salesPointMock);
+    @Test
+    public void testRemoveTarget() throws Exception {
+        BasicSalesPoint salesPoint1 = new BasicSalesPoint(0.0, 0.0);
+        BasicSalesPoint salesPoint2 = new BasicSalesPoint(0.1, 0.1);
 
-        verify(salesPointMock);
-        assertNotNull(salesPoint.getTargetDistance(salesPointMock));
+        salesPoint1.addTarget(salesPoint2);
+        salesPoint1.removeTarget(salesPoint2);
+
+        assertNull(salesPoint1.getTargetDistance(salesPoint2));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testRemoveNotExistingTarget() throws Exception {
+        BasicSalesPoint salesPoint1 = new BasicSalesPoint(0.0, 0.0);
+        BasicSalesPoint salesPoint2 = new BasicSalesPoint(0.1, 0.1);
+
+        salesPoint1.removeTarget(salesPoint2);
     }
 }

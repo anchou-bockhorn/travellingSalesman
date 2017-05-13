@@ -28,6 +28,14 @@ public abstract class SalesPoint {
     public abstract SalesPoint addTarget(SalesPoint target);
 
     /**
+     * Removes the save distance to the target node from collection.
+     *
+     * @param target
+     * @return this
+     */
+    public abstract SalesPoint removeTarget(SalesPoint target);
+
+    /**
      * Reads the distance from this to the passed SalesPoint, if the passed SalesPoint was previously
      * registered with addTarget method, else the null is returned
      *

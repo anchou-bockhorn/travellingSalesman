@@ -13,20 +13,31 @@ public class UuidSalesPoint extends SalesPoint {
 
     @Override
     public SalesPoint addTarget(SalesPoint target) {
-        if (!(target instanceof UuidSalesPoint)) {
-            throw new IllegalArgumentException("Not allowed to mix SalesPointHashMapUuid with SalesPoints without UUID");
-        }
-        UUID salesPointUuid = ((UuidSalesPoint) target).getUuid();
+        UUID salesPointUuid = castTarget(target).getUuid();
         targetDistances.put(salesPointUuid, this.calculateDistance(target));
         return this;
     }
 
     @Override
-    public Double getTargetDistance(SalesPoint salesPoint) {
-        if (!(salesPoint instanceof UuidSalesPoint)) {
+    public SalesPoint removeTarget(SalesPoint target) {
+        Double removedDistance = targetDistances.remove(castTarget(target).getUuid());
+        if (removedDistance == null) {
+            throw new IllegalArgumentException("Removed SalesPoint: " + target.toString() + "is not present in" +
+                " targets collection");
+        }
+        return this;
+    }
+
+    @Override
+    public Double getTargetDistance(SalesPoint target) {
+        return targetDistances.get(castTarget(target).getUuid());
+    }
+
+    private UuidSalesPoint castTarget(SalesPoint target) {
+        if (!(target instanceof UuidSalesPoint)) {
             throw new IllegalArgumentException("Not allowed to mix SalesPointHashMapUuid with SalesPoints without UUID");
         }
-        return targetDistances.get(((UuidSalesPoint) salesPoint).getUuid());
+        return (UuidSalesPoint) target;
     }
 
     private UUID getUuid() {

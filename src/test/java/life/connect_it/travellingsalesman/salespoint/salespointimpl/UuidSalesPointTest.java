@@ -7,20 +7,15 @@ import static org.easymock.EasyMock.*;
 import static org.testng.Assert.*;
 
 public class UuidSalesPointTest {
+
     @Test
     public void testAddTarget() throws Exception {
-        UuidSalesPoint salesPointMock = EasyMock.mock(UuidSalesPoint.class);
-        expect(salesPointMock.getXCoordinate()).andReturn(0.0);
-        expect(salesPointMock.getYCoordinate()).andReturn(0.0);
+        UuidSalesPoint salesPoint1 = new UuidSalesPoint(0.0, 0.0);
+        UuidSalesPoint salesPoint2 = new UuidSalesPoint(0.1, 0.1);
 
-        replay(salesPointMock);
+        salesPoint1.addTarget(salesPoint2);
 
-        UuidSalesPoint salesPoint = new UuidSalesPoint(0.0, 0.0);
-
-        salesPoint.addTarget(salesPointMock);
-
-        verify(salesPointMock);
-        assertNotNull(salesPoint.getTargetDistance(salesPointMock));
+        assertNotNull(salesPoint1.getTargetDistance(salesPoint2));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -39,5 +34,24 @@ public class UuidSalesPointTest {
         UuidSalesPoint salesPoint = new UuidSalesPoint(0.0, 0.0);
 
         salesPoint.getTargetDistance(salesPointMock);
+    }
+
+    @Test
+    public void testRemoveTarget() throws Exception {
+        UuidSalesPoint salesPoint1 = new UuidSalesPoint(0.0, 0.0);
+        UuidSalesPoint salesPoint2 = new UuidSalesPoint(0.1, 0.1);
+
+        salesPoint1.addTarget(salesPoint2);
+        salesPoint1.removeTarget(salesPoint2);
+
+        assertNull(salesPoint1.getTargetDistance(salesPoint2));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testRemoveNotExistingTarget() throws Exception {
+        UuidSalesPoint salesPoint1 = new UuidSalesPoint(0.0, 0.0);
+        UuidSalesPoint salesPoint2 = new UuidSalesPoint(0.1, 0.1);
+
+        salesPoint1.removeTarget(salesPoint2);
     }
 }

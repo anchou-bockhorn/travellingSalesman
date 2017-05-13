@@ -16,6 +16,16 @@ public class BasicSalesPoint extends SalesPoint {
     }
 
     @Override
+    public SalesPoint removeTarget(SalesPoint target) {
+        Double removedDistance = targetDistances.remove(target);
+        if (removedDistance == null) {
+            throw new IllegalArgumentException("Removed SalesPoint: " + target.toString() + "is not present in" +
+                " targets collection");
+        }
+        return this;
+    }
+
+    @Override
     public Double getTargetDistance(SalesPoint salesPoint) {
         return targetDistances.get(salesPoint);
     }
