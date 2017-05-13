@@ -10,7 +10,7 @@ public class Context {
     PathFinder pathFinder;
 
     public ArrayList<SalesPoint> executePathFinder(SalesManMap salesManMap) {
-        return pathFinder.findShortestPath(salesManMap);
+        return pathFinder.findPath(salesManMap);
     }
 
     public Context setPathFinder(PathFinder pathFinder) {

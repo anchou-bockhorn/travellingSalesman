@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.sun.istack.internal.Nullable;
 import life.connect_it.travellingsalesman.helper.WitnessCalculator;
 import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPointFactory;
@@ -25,7 +24,7 @@ public class SalesManMap {
     private double xBorder = 0;
     private double yBorder = 0;
 
-    @Nullable private ArrayList<SalesPoint> salesPoints = new ArrayList<>();
+    private ArrayList<SalesPoint> salesPoints = new ArrayList<>();
 
     public SalesManMap(List<double[]> initialSalesPointsCoordinates,
                        SalesPointFactory salesPointFactory,
@@ -57,6 +56,10 @@ public class SalesManMap {
         return salesPoint;
     }
 
+    public ArrayList<ArrayList<SalesPoint>> getWitnesses() {
+        return witnessCalculator.calculateWitnesses(salesPoints);
+    }
+
     public double getXBorder() {
         return xBorder;
     }
@@ -77,18 +80,14 @@ public class SalesManMap {
     }
 
     private void reevaluateMapBorder(double xCoordinate, double yCoordinate) {
-        xBorder = updateCoordinate(xCoordinate, xBorder);
-        yBorder = updateCoordinate(yCoordinate, yBorder);
+        xBorder = updateBorderCoordinate(xCoordinate, xBorder);
+        yBorder = updateBorderCoordinate(yCoordinate, yBorder);
     }
 
-    private double updateCoordinate(double xCoordinate, double xBorder) {
+    private double updateBorderCoordinate(double xCoordinate, double xBorder) {
         if (xCoordinate > xBorder) {
             return xCoordinate;
         }
         return xBorder;
-    }
-
-    public ArrayList<ArrayList<SalesPoint>> getWitnesses() {
-        return witnessCalculator.calculateWitnesses(salesPoints);
     }
 }

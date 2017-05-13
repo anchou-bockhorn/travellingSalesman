@@ -8,7 +8,7 @@ import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 public class BestPathFinder implements PathFinder {
 
     @Override
-    public ArrayList<SalesPoint> findShortestPath(SalesManMap salesManMap) {
+    public ArrayList<SalesPoint> findPath(SalesManMap salesManMap) {
         ArrayList<ArrayList<SalesPoint>> witnesses = salesManMap.getWitnesses();
 
         return null;

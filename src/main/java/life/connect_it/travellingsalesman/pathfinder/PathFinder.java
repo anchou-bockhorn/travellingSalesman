@@ -6,5 +6,5 @@ import life.connect_it.travellingsalesman.map.SalesManMap;
 import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 
 public interface PathFinder {
-    ArrayList<SalesPoint> findShortestPath(SalesManMap salesManMap);
+    ArrayList<SalesPoint> findPath(SalesManMap salesManMap);
 }
