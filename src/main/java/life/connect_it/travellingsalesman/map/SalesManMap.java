@@ -70,12 +70,22 @@ public class SalesManMap {
         return salesPoint;
     }
 
+    /**
+     * Get SalesPoint from this collection by index
+     *
+     * @param index index of SalesPoint in collection
+     * @return the newly created SalesPoint
+     */
+    public SalesPoint getSalesPoint(int index) {
+        return salesPoints.get(index);
+    }
+
     private void updateDistancesRemovePoint(SalesPoint salesPoint) {
         salesPoints.forEach(point -> point.removeTarget(salesPoint));
     }
 
-    public ArrayList<ArrayList<SalesPoint>> getWitnesses() {
-        return witnessCalculator.calculateWitnesses(salesPoints);
+    public ArrayList<ArrayList<Integer>> getWitnesses() {
+        return witnessCalculator.calculateWitnesses(salesPoints.size());
     }
 
     private void updateDistancesAddPoint(SalesPoint newSalesPoint) {

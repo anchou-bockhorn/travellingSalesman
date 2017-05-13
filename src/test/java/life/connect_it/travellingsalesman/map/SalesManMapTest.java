@@ -107,7 +107,7 @@ public class SalesManMapTest {
 
     @Test
     public void testGetWitnesses() throws Exception {
-        expect(witnessCalculator.calculateWitnesses(new ArrayList<>()))
+        expect(witnessCalculator.calculateWitnesses(3))
             .andReturn(new ArrayList<>());
 
         mocksControl.replay();

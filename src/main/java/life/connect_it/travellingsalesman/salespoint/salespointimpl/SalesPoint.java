@@ -42,7 +42,7 @@ public abstract class SalesPoint {
      * @param salesPoint
      * @return the distance from this to the passed SalesPoint or null
      */
-    protected abstract Double getTargetDistance(SalesPoint salesPoint);
+    public abstract Double getTargetDistance(SalesPoint salesPoint);
 
     double getXCoordinate() {
         return xCoordinate;
