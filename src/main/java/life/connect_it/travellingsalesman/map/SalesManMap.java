@@ -2,7 +2,6 @@ package life.connect_it.travellingsalesman.map;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import life.connect_it.travellingsalesman.helper.WitnessCalculator;
 import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
@@ -16,18 +15,13 @@ import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPoint
  * @see SalesPoint
  */
 public class SalesManMap {
-    private static final Logger logger = Logger.getLogger(SalesManMap.class.getName());
-
-    private final WitnessCalculator witnessCalculator;
     private final SalesPointFactory salesPointFactory;
 
     private ArrayList<SalesPoint> salesPoints = new ArrayList<>();
 
     public SalesManMap(List<double[]> initialSalesPointsCoordinates,
-                       SalesPointFactory salesPointFactory,
-                       WitnessCalculator witnessCalculator) {
+                       SalesPointFactory salesPointFactory) {
         this.salesPointFactory = salesPointFactory;
-        this.witnessCalculator = witnessCalculator;
         if (initialSalesPointsCoordinates != null) {
             initialSalesPointsCoordinates
                 .forEach(salesPointCoordinates -> addSalesPoint(salesPointCoordinates[0], salesPointCoordinates[1]));
@@ -85,7 +79,7 @@ public class SalesManMap {
     }
 
     public ArrayList<ArrayList<Integer>> getWitnesses() {
-        return witnessCalculator.calculateWitnesses(salesPoints.size());
+        return WitnessCalculator.calculateWitnesses(salesPoints.size());
     }
 
     private void updateDistancesAddPoint(SalesPoint newSalesPoint) {

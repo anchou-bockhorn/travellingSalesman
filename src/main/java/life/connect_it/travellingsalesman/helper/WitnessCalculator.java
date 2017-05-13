@@ -7,7 +7,7 @@ import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 
 public class WitnessCalculator {
 
-    public ArrayList<ArrayList<Integer>> calculateWitnesses(int salesPointsNumber) {
+    public static ArrayList<ArrayList<Integer>> calculateWitnesses(int salesPointsNumber) {
         ArrayList<Integer> basicList = new ArrayList<>();
         for (int i = 0; i < salesPointsNumber; i++) {
             basicList.add(i);
@@ -15,7 +15,7 @@ public class WitnessCalculator {
         return createPermutation(basicList);
     }
 
-    private ArrayList<ArrayList<Integer>> createPermutation(ArrayList<Integer> basicList) {
+    private static ArrayList<ArrayList<Integer>> createPermutation(ArrayList<Integer> basicList) {
         ArrayList<ArrayList<Integer>> permutations = new ArrayList<>();
         permutations.add(basicList);
         for (int i = 0; i < basicList.size() - 1; i++) {
@@ -31,7 +31,7 @@ public class WitnessCalculator {
         return permutations;
     }
 
-    private void swapElements(ArrayList<Integer> arrayList, int currentElement, int indexToSwap) {
+    private static void swapElements(ArrayList<Integer> arrayList, int currentElement, int indexToSwap) {
         Integer elementToSwap = arrayList.get(currentElement);
         arrayList.set(currentElement, arrayList.get(indexToSwap));
         arrayList.set(indexToSwap, elementToSwap);

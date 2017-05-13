@@ -19,6 +19,30 @@
       <artifactId>easymock</artifactId>
       <version>3.4</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-easymock -->
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-easymock</artifactId>
+      <version>1.7.0RC4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-testng-common</artifactId>
+      <version>1.6.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-testng</artifactId>
+      <version>1.6.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-easymock</artifactId>
+      <version>1.6.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
 </project>

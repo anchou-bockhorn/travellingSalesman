@@ -12,13 +12,17 @@ import org.easymock.IMocksControl;
 import life.connect_it.travellingsalesman.helper.WitnessCalculator;
 import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPointFactory;
+import org.powermock.api.easymock.PowerMock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.testng.PowerMockTestCase;
+import org.powermock.modules.testng.PowerMockObjectFactory;
+import org.powermock.api.extension.proxyframework.ProxyFrameworkImpl;
 
 import static org.easymock.EasyMock.*;
-import static org.testng.Assert.*;
 
-public class SalesManMapTest {
+@PrepareForTest(WitnessCalculator.class)
+public class SalesManMapTest extends PowerMockTestCase {
     private IMocksControl mocksControl = EasyMock.createControl();
-    private WitnessCalculator witnessCalculator = mocksControl.createMock(WitnessCalculator.class);
 
     @BeforeMethod
     public void setup() {
@@ -34,10 +38,7 @@ public class SalesManMapTest {
     public Object[][] getSalesPointsData() {
         return new Object[][]{
             {Arrays.asList(new double[]{3.0, 2.0})},
-            {Arrays.asList(new double[]{1.0, 3.1},
-                new double[]{5.9, 2.1},
-                new double[]{8.0, 3.1},
-                new double[]{9.0, 0.2})},
+            {Arrays.asList(new double[]{1.0, 3.1}, new double[]{5.9, 2.1}, new double[]{8.0, 3.1}, new double[]{9.0, 0.2})},
             {Arrays.asList(new double[]{0.1, 2.9})},
         };
     }
@@ -49,7 +50,7 @@ public class SalesManMapTest {
 
         mocksControl.replay();
 
-        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory, witnessCalculator);
+        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory);
         salesPointCoordinates.forEach(coordinate -> salesManMap.addSalesPoint(coordinate[0], coordinate[1]));
     }
 
@@ -59,7 +60,7 @@ public class SalesManMapTest {
         createSalesPointMocksList(salesPointCoordinates, salesPointFactory);
 
         mocksControl.replay();
-        new SalesManMap(salesPointCoordinates, salesPointFactory, witnessCalculator);
+        new SalesManMap(salesPointCoordinates, salesPointFactory);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -71,7 +72,7 @@ public class SalesManMapTest {
 
         mocksControl.replay();
 
-        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory, witnessCalculator);
+        SalesManMap salesManMap = new SalesManMap(null, salesPointFactory);
 
         salesManMap.addSalesPoint(0.0, 0.0);
         salesManMap.addSalesPoint(0.0, 0.0);
@@ -89,7 +90,7 @@ public class SalesManMapTest {
         salesPoints.forEach(salesPoint -> expect(salesPoint.removeTarget(pointToRemove)).andReturn(salesPoint));
 
         mocksControl.replay();
-        new SalesManMap(salesPointCoordinates, salesPointFactory, witnessCalculator)
+        new SalesManMap(salesPointCoordinates, salesPointFactory)
             .removeSalesPoint(salesPointCoordinates.get(0)[0], salesPointCoordinates.get(0)[1]);
     }
 
@@ -101,18 +102,22 @@ public class SalesManMapTest {
 
         mocksControl.replay();
 
-        new SalesManMap(null, salesPointFactory, witnessCalculator)
+        new SalesManMap(null, salesPointFactory)
             .removeSalesPoint(0.0, 0.0);
     }
 
     @Test
     public void testGetWitnesses() throws Exception {
-        expect(witnessCalculator.calculateWitnesses(3))
+        PowerMock.mockStatic(WitnessCalculator.class);
+        expect(WitnessCalculator.calculateWitnesses(0))
             .andReturn(new ArrayList<>());
 
+        PowerMock.replay(WitnessCalculator.class);
         mocksControl.replay();
 
-        new SalesManMap(null, null, witnessCalculator).getWitnesses();
+        new SalesManMap(null, null).getWitnesses();
+
+        PowerMock.verify(WitnessCalculator.class);
     }
 
     private List<SalesPoint> createSalesPointMocksList(List<double[]> salesPointCoordinates,
