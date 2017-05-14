@@ -3,9 +3,10 @@ package life.connect_it.travellingsalesman.map;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.beust.jcommander.internal.Nullable;
 import life.connect_it.travellingsalesman.helper.WitnessCalculator;
-import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPointFactory;
+import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 
 /**
  * Represents a two dimensional space with nodes of type SalesPoint in it and a rectangular,
@@ -19,7 +20,7 @@ public class SalesManMap {
 
     private ArrayList<SalesPoint> salesPoints = new ArrayList<>();
 
-    public SalesManMap(List<double[]> initialSalesPointsCoordinates,
+    public SalesManMap(@Nullable List<double[]> initialSalesPointsCoordinates,
                        SalesPointFactory salesPointFactory) {
         this.salesPointFactory = salesPointFactory;
         if (initialSalesPointsCoordinates != null) {
@@ -55,7 +56,8 @@ public class SalesManMap {
      */
     public SalesPoint removeSalesPoint(double xCoordinate, double yCoordinate) {
         SalesPoint salesPoint = salesPointFactory.getSalesPoint(xCoordinate, yCoordinate);
-        if (salesPoints.remove(salesPoint)) {
+        boolean removalSuccessful = salesPoints.remove(salesPoint);
+        if (removalSuccessful) {
             updateDistancesRemovePoint(salesPoint);
         } else {
             throw new IllegalArgumentException("Removed SalesPoint: " + salesPoint.toString() + "is not present in" +
@@ -74,12 +76,17 @@ public class SalesManMap {
         return salesPoints.get(index);
     }
 
-    private void updateDistancesRemovePoint(SalesPoint salesPoint) {
-        salesPoints.forEach(point -> point.removeTarget(salesPoint));
+    /**
+     * Calculates an
+     *
+     * @return the newly created SalesPoint
+     */
+    public List<List<Integer>> getWitnesses() {
+        return WitnessCalculator.calculateWitnesses(salesPoints.size());
     }
 
-    public ArrayList<ArrayList<Integer>> getWitnesses() {
-        return WitnessCalculator.calculateWitnesses(salesPoints.size());
+    private void updateDistancesRemovePoint(SalesPoint pointToRemove) {
+        salesPoints.forEach(point -> point.removeTarget(pointToRemove));
     }
 
     private void updateDistancesAddPoint(SalesPoint newSalesPoint) {

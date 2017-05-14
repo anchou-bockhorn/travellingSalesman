@@ -59,6 +59,14 @@ public abstract class SalesPoint {
     }
 
     @Override
+    public String toString() {
+        return "SalesPoint{" +
+            "xCoordinate=" + xCoordinate +
+            ", yCoordinate=" + yCoordinate +
+            '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !getClass().getSuperclass().isAssignableFrom(o.getClass())) return false;

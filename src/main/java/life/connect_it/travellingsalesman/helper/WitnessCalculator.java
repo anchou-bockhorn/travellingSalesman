@@ -3,11 +3,9 @@ package life.connect_it.travellingsalesman.helper;
 import java.util.ArrayList;
 import java.util.List;
 
-import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
-
 public class WitnessCalculator {
 
-    public static ArrayList<ArrayList<Integer>> calculateWitnesses(int salesPointsNumber) {
+    public static List<List<Integer>> calculateWitnesses(int salesPointsNumber) {
         ArrayList<Integer> basicList = new ArrayList<>();
         for (int i = 0; i < salesPointsNumber; i++) {
             basicList.add(i);
@@ -15,8 +13,8 @@ public class WitnessCalculator {
         return createPermutation(basicList);
     }
 
-    private static ArrayList<ArrayList<Integer>> createPermutation(ArrayList<Integer> basicList) {
-        ArrayList<ArrayList<Integer>> permutations = new ArrayList<>();
+    private static List<List<Integer>> createPermutation(List<Integer> basicList) {
+        List<List<Integer>> permutations = new ArrayList<>();
         permutations.add(basicList);
         for (int i = 0; i < basicList.size() - 1; i++) {
             int permutationSize = permutations.size();

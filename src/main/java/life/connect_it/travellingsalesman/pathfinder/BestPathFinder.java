@@ -1,6 +1,6 @@
 package life.connect_it.travellingsalesman.pathfinder;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import life.connect_it.travellingsalesman.map.SalesManMap;
 import life.connect_it.travellingsalesman.map.SalesManMapFactory;
@@ -18,10 +18,10 @@ public class BestPathFinder implements PathFinder {
     }
 
     @Override
-    public ArrayList<SalesPoint> findPath(SalesManMap salesManMap) {
-        ArrayList<ArrayList<Integer>> witnesses = salesManMap.getWitnesses();
+    public List<SalesPoint> findPath(SalesManMap salesManMap) {
+        List<List<Integer>> witnesses = salesManMap.getWitnesses();
 
-        ArrayList<Integer> currentlyBestPath = witnesses.get(0);
+        List<Integer> currentlyBestPath = witnesses.get(0);
         double bestDistance = calculateDistance(currentlyBestPath, salesManMap);
 
         for (int i = 1; i < witnesses.size(); i++) {
@@ -33,7 +33,7 @@ public class BestPathFinder implements PathFinder {
         return null;
     }
 
-    private double calculateDistance(ArrayList<Integer> path, SalesManMap map) {
+    private double calculateDistance(List<Integer> path, SalesManMap map) {
         double distance = 0.0;
         for (int i = 0; i < path.size() - 1; i++) {
             distance += map.getSalesPoint(path.get(i)).getTargetDistance(map.getSalesPoint(path.get(i + 1)));

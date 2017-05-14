@@ -43,4 +43,13 @@ public class UuidSalesPoint extends SalesPoint {
     private UUID getUuid() {
         return uuid;
     }
+
+    @Override
+    public String toString() {
+        return "UuidSalesPoint{" +
+            "uuid=" + uuid +
+            ", xCoordinate=" + xCoordinate +
+            ", yCoordinate=" + yCoordinate +
+            '}';
+    }
 }
