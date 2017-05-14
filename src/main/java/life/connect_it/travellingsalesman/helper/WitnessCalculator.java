@@ -3,6 +3,8 @@ package life.connect_it.travellingsalesman.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.currentTimeMillis;
+
 public class WitnessCalculator {
 
     public static List<List<Integer>> calculateWitnesses(int salesPointsNumber) {
@@ -16,6 +18,9 @@ public class WitnessCalculator {
     private static List<List<Integer>> createPermutation(List<Integer> basicList) {
         List<List<Integer>> permutations = new ArrayList<>();
         permutations.add(basicList);
+
+        long start = currentTimeMillis();
+
         for (int i = 0; i < basicList.size() - 1; i++) {
             int permutationSize = permutations.size();
             for (int k = 0; k < i + 1; k++) {
@@ -26,6 +31,9 @@ public class WitnessCalculator {
                 }
             }
         }
+
+        System.out.println(Long.valueOf(currentTimeMillis() - start).toString());
+
         return permutations;
     }
 

@@ -4,7 +4,8 @@ import java.util.List;
 
 import life.connect_it.travellingsalesman.map.SalesManMap;
 import life.connect_it.travellingsalesman.map.SalesManMapFactory;
-import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
+
+import static java.lang.System.*;
 
 public class BestPathFinder implements PathFinder {
     private static final SalesManMapFactory MAP_FACTORY = new SalesManMapFactory();
@@ -18,19 +19,28 @@ public class BestPathFinder implements PathFinder {
     }
 
     @Override
-    public List<SalesPoint> findPath(SalesManMap salesManMap) {
-        List<List<Integer>> witnesses = salesManMap.getWitnesses();
+    public List<Integer> findPath(List<double[]> initialSalesPoints) {
+        SalesManMap currentMap = basicMap;
+
+        initialSalesPoints.forEach(point -> currentMap.addSalesPoint(point[0], point[1]));
+        List<List<Integer>> witnesses = currentMap.getWitnesses();
 
         List<Integer> currentlyBestPath = witnesses.get(0);
-        double bestDistance = calculateDistance(currentlyBestPath, salesManMap);
+        double bestDistance = calculateDistance(currentlyBestPath, currentMap);
+
+        long start = currentTimeMillis();
 
         for (int i = 1; i < witnesses.size(); i++) {
-            if (bestDistance > calculateDistance(witnesses.get(i), salesManMap)) {
+            double currentDistance = calculateDistance(witnesses.get(i), currentMap);
+            if (bestDistance > currentDistance) {
                 currentlyBestPath = witnesses.get(i);
+                bestDistance = currentDistance;
             }
         }
 
-        return null;
+        System.out.println(Long.valueOf(currentTimeMillis() - start).toString());
+
+        return currentlyBestPath;
     }
 
     private double calculateDistance(List<Integer> path, SalesManMap map) {
@@ -38,6 +48,7 @@ public class BestPathFinder implements PathFinder {
         for (int i = 0; i < path.size() - 1; i++) {
             distance += map.getSalesPoint(path.get(i)).getTargetDistance(map.getSalesPoint(path.get(i + 1)));
         }
+        distance += map.getSalesPoint(path.get(path.size() - 1)).getTargetDistance(map.getSalesPoint(path.get(0)));
         return distance;
     }
 }
