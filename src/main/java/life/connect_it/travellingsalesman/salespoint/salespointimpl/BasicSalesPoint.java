@@ -29,4 +29,12 @@ public class BasicSalesPoint extends SalesPoint {
     public Double getTargetDistance(SalesPoint salesPoint) {
         return targetDistances.get(salesPoint);
     }
+
+    @Override
+    public String toString() {
+        return "BasicSalesPoint{" +
+            "xCoordinate=" + xCoordinate +
+            ", yCoordinate=" + yCoordinate +
+            '}';
+    }
 }

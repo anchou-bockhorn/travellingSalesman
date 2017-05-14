@@ -77,9 +77,10 @@ public class SalesManMap {
     }
 
     /**
-     * Calculates an
+     * Calculates an List of Lists containing all Permutation of Indexes for the SalesPoints
+     * saved in this SalesPoint collection
      *
-     * @return the newly created SalesPoint
+     * @return List of Lists containing all Permutation of Indexes valid for this::getSalesPoint
      */
     public List<List<Integer>> getWitnesses() {
         return WitnessCalculator.calculateWitnesses(salesPoints.size());

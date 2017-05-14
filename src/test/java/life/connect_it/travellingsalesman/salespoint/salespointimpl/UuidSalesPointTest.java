@@ -3,7 +3,6 @@ package life.connect_it.travellingsalesman.salespoint.salespointimpl;
 import org.testng.annotations.*;
 import org.easymock.EasyMock;
 
-import static org.easymock.EasyMock.*;
 import static org.testng.Assert.*;
 
 public class UuidSalesPointTest {

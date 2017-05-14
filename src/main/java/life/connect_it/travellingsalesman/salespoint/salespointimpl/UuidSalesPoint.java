@@ -35,7 +35,8 @@ public class UuidSalesPoint extends SalesPoint {
 
     private UuidSalesPoint castTarget(SalesPoint target) {
         if (!(target instanceof UuidSalesPoint)) {
-            throw new IllegalArgumentException("Not allowed to mix SalesPointHashMapUuid with SalesPoints without UUID");
+            throw new IllegalArgumentException("SalesPoint: " + target.toString() + " is not of type UuidSalesPoint. " +
+                "It is not allowed to mix SalesPointHashMapUuid with SalesPoints without UUID");
         }
         return (UuidSalesPoint) target;
     }
