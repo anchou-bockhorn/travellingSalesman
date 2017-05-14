@@ -16,11 +16,11 @@ public class Demo {
             new double[]{2.5, 0.0},
             new double[]{2.2, 0.3},
             new double[]{2.0, 1.0},
+            new double[]{2.3, 0.6},
             new double[]{1.0, 1.0},
             new double[]{1.3, 1.9},
             new double[]{0.3, 2.8},
             new double[]{0.3, 2.1},
-            new double[]{2.0, 2.0},
             new double[]{0.0, 0.0}
             );
 

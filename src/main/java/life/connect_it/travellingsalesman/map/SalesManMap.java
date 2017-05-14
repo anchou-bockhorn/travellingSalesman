@@ -9,8 +9,8 @@ import life.connect_it.travellingsalesman.salespoint.factoryinterface.SalesPoint
 import life.connect_it.travellingsalesman.salespoint.salespointimpl.SalesPoint;
 
 /**
- * Represents a two dimensional space with nodes of type SalesPoint in it and a rectangular,
- * automatically calculated border just as wide as necessary to contain all added nodes.
+ * Represents a data structure to collect and organise SalesPoints for fast calculation of paths
+ * visiting these SalesPoints. Saves the Points in order they added, and can be accessed by index
  *
  * @author Anchou Bockhorn - anchou.bockhorn@gmail.com
  * @see SalesPoint
@@ -30,7 +30,7 @@ public class SalesManMap {
     }
 
     /**
-     * Creates and adds a new SalesPoint to the this
+     * Creates and adds a new SalesPoint to this instance collection
      *
      * @param xCoordinate x-coordinate of de newly generated SalesPoint
      * @param yCoordinate y-coordinate of de newly generated SalesPoint
@@ -48,11 +48,11 @@ public class SalesManMap {
     }
 
     /**
-     * Removes a SalesPoint from this collection and form the SalesPoints targetDistance collections
+     * Removes a SalesPoint from this collection
      *
-     * @param xCoordinate x-coordinate of de newly generated SalesPoint
-     * @param yCoordinate y-coordinate of de newly generated SalesPoint
-     * @return the newly created SalesPoint
+     * @param xCoordinate x-coordinate of de SalesPoint to be removed
+     * @param yCoordinate y-coordinate of de SalesPoint to be removed
+     * @return the removed SalesPoint
      */
     public SalesPoint removeSalesPoint(double xCoordinate, double yCoordinate) {
         SalesPoint salesPoint = salesPointFactory.getSalesPoint(xCoordinate, yCoordinate);
@@ -70,7 +70,7 @@ public class SalesManMap {
      * Get SalesPoint from this collection by index
      *
      * @param index index of SalesPoint in collection
-     * @return the newly created SalesPoint
+     * @return SalesPoint by index
      */
     public SalesPoint getSalesPoint(int index) {
         return salesPoints.get(index);

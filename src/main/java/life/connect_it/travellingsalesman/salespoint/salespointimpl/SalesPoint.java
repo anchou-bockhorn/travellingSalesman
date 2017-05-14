@@ -2,7 +2,7 @@ package life.connect_it.travellingsalesman.salespoint.salespointimpl;
 
 /**
  * Represents a node in a two dimensional space, containing a collection of calculated
- * distances to other nodes for better performance
+ * distances to other nodes in this space for better performance
  *
  * @author Anchou Bockhorn - anchou.bockhorn@gmail.com
  */
@@ -22,7 +22,7 @@ public abstract class SalesPoint {
      * Calculates the distance to the target node and saves it. The calculated distance can be accessed
      * by calling getTargetDistance function
      *
-     * @param target
+     * @param target node to be to be added
      * @return this
      */
     public abstract SalesPoint addTarget(SalesPoint target);
@@ -30,17 +30,17 @@ public abstract class SalesPoint {
     /**
      * Removes the save distance to the target node from collection.
      *
-     * @param target
+     * @param target node to be removed collection
      * @return this
      */
     public abstract SalesPoint removeTarget(SalesPoint target);
 
     /**
      * Reads the distance from this to the passed SalesPoint, if the passed SalesPoint was previously
-     * registered with addTarget method, else the null is returned
+     * registered with addTarget method
      *
-     * @param salesPoint
-     * @return the distance from this to the passed SalesPoint or null
+     * @param salesPoint node to get the distance from this
+     * @return the distance from this to the passed SalesPoint
      */
     public abstract Double getTargetDistance(SalesPoint salesPoint);
 
