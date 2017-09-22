@@ -60,8 +60,8 @@ public class SalesManMap {
         if (removalSuccessful) {
             updateDistancesRemovePoint(salesPoint);
         } else {
-            throw new IllegalArgumentException("Removed SalesPoint: " + salesPoint.toString() + "is not present in" +
-                " collection");
+            throw new IllegalArgumentException("Removed SalesPoint: " + salesPoint.toString() + "is not present in " +
+                "collection");
         }
         return salesPoint;
     }
